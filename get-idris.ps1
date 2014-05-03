@@ -143,7 +143,6 @@ function run-msys-installscripts {
         mkdir -p ~/bin
         echo 'export LC_ALL=C' >> ~/.bash_profile
         echo 'export PATH=/ghc-7.8.2/bin:`$PATH'       >> ~/.bash_profile
-        echo 'export PATH=/ghc-7.8.2/mingw/bin:`$PATH'       >> ~/.bash_profile
         echo 'export PATH=`$HOME/bin:`$PATH'            >> ~/.bash_profile
         echo 'export PATH=$($win_home)/AppData/Roaming/cabal/bin:`$PATH' >> ~/.bash_profile
 "@
@@ -161,14 +160,18 @@ function run-msys-installscripts {
     .\msys\bin\bash -l -c "pacman -S --noconfirm libtool"
     .\msys\bin\bash -l -c "pacman -S --noconfirm automake"
     .\msys\bin\bash -l -c "pacman -S --noconfirm xz"
+    if ($msys -eq 32) {
+        .\msys\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-gcc"
+    } else {
+        .\msys\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-gcc"
+    }
     .\msys\bin\bash -l -c "cp $current_posix/downloads/cabal.exe ~/bin"
     $ghc_cmds=@"
     ~/bin/cabal update
     git clone git://github.com/idris-lang/Idris-dev idris
     cd idris
-    ~/bin/cabal sandbox init
+    export CC=gcc
     ~/bin/cabal install
-    cp .cabal-sandbox/bin/idris.exe ~/bin
 "@
     echo $ghc_cmds | Out-File -Encoding ascii idris.sh
     .\msys\bin\bash -l -e -c "$current_posix/idris.sh"
