@@ -161,6 +161,7 @@ function run-msys-installscripts {
     .\msys\bin\bash -l -c "pacman -S --noconfirm libtool"
     .\msys\bin\bash -l -c "pacman -S --noconfirm automake"
     .\msys\bin\bash -l -c "pacman -S --noconfirm xz"
+    .\msys\bin\bash -l -c "pacman -S --noconfirm msys2-w32api-runtime"
     if ($msys -eq 32) {
         .\msys\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-gcc"
     } else {
