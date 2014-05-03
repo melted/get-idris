@@ -170,6 +170,7 @@ function run-msys-installscripts {
     .\msys\bin\bash -l -c "cp $current_posix/downloads/cabal.exe ~/bin"
     $ghc_cmds=@"
     ~/bin/cabal update
+    cabal install alex
     git clone git://github.com/idris-lang/Idris-dev idris
     cd idris
     export CC=gcc
