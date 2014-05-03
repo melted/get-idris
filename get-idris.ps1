@@ -133,7 +133,11 @@ function run-msys-installscripts {
     .\msys\bin\bash -l -c "exit"
      $current_posix=.\msys\bin\cygpath.exe -u $current_dir
      $win_home = .\msys\bin\cygpath.exe -u $HOME
-
+     $cache_file = $HOME+"\AppData\roaming\cabal\packages\hackage.haskell.org\00-index.cache"
+     if (Test-Path $cache_file) {
+        Write-Host "Removing cabal cache"
+        rm $cache_file
+     }
 
     $bash_paths=@"
         mkdir -p ~/bin
