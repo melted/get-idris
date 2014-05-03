@@ -8,7 +8,7 @@
 # This file has been placed in the public domain by the author.
 
 $current_dir = pwd
-$msys = 32 # Change to 32 to build a 32-bit GHC
+$msys = 64 # Change to 32 to build a 32-bit GHC
 
 function get-tarball {
     param([string]$url, [string]$outfile, [string]$hash)
