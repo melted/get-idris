@@ -146,6 +146,7 @@ function run-msys-installscripts {
         echo 'export PATH=`$HOME/bin:`$PATH'            >> ~/.bash_profile
         echo 'export PATH=/mingw$($msys)/bin:`$PATH'            >> ~/.bash_profile
         echo 'export PATH=$($win_home)/AppData/Roaming/cabal/bin:`$PATH' >> ~/.bash_profile
+        echo 'export CC=gcc' >> ~/.bash_profile
 "@
     echo $bash_paths | Out-File -Encoding ascii temp.sh
     .\msys\bin\bash -l -c "$current_posix/temp.sh"
