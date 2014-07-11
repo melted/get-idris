@@ -64,9 +64,9 @@ function create-dirs {
 }
 
 function install-ghc32 {
-    $url="http://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-i386-unknown-mingw32.tar.xz"
+    $url="https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-i386-unknown-mingw32.tar.xz"
     $file="downloads\ghc32.tar.xz"
-    $hash="87C8F37EF3C4A7266043B18F2AE869C551681EF3"
+    $hash="10ed53deddd356efcca4ad237bdd0e5a5102fb11"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y ghc32.tar -omsys
@@ -75,9 +75,9 @@ function install-ghc32 {
 }
 
 function install-msys32() {
-    $url="http://sourceforge.net/projects/msys2/files/Base/i686/msys2-base-i686-20131208.tar.xz/download"
+    $url="http://sourceforge.net/projects/msys2/files/Base/i686/msys2-base-i686-20140704.tar.xz/download"
     $file="downloads\msys32.tar.xz"
-    $hash="6AD1FA798C7B7CA9BFC46F01708689FD54B2BB9B"
+    $hash="775d885438ab5abde250c307dd6cf2525af2edef"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y msys32.tar
@@ -87,9 +87,9 @@ function install-msys32() {
 }
 
 function install-ghc64 {
-    $url="http://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-x86_64-unknown-mingw32.tar.xz"
+    $url="https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-x86_64-unknown-mingw32.tar.xz"
     $file="downloads\ghc64.tar.xz"
-    $hash="B512690BFACD446DDE0C98302013DCAFCE4535A9"
+    $hash="e18e279e98768c70839a0ef606d55cb733e362dc"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y ghc64.tar -omsys
@@ -98,9 +98,9 @@ function install-ghc64 {
 }
 
 function install-msys64() {
-    $url="http://sourceforge.net/projects/msys2/files/Base/x86_64/msys2-base-x86_64-20140216.tar.xz/download"
+    $url="http://sourceforge.net/projects/msys2/files/Base/x86_64/msys2-base-x86_64-20140704.tar.xz/download"
     $file="downloads\msys64.tar.xz"
-    $hash="B512C52B3DAE5274262163A126CE43E5EE4CA4BA"
+    $hash="28329156278d91114aa870b7c0680ad261292c5d"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y msys64.tar
@@ -130,9 +130,9 @@ function download-cabal {
 }
 
 function run-msys-installscripts {
-    .\msys\bin\bash -l -c "exit"
-     $current_posix=.\msys\bin\cygpath.exe -u $current_dir
-     $win_home = .\msys\bin\cygpath.exe -u $HOME
+    .\msys\usr\bin\bash -l -c "exit" | Out-Null
+     $current_posix=.\msys\usr\bin\cygpath.exe -u $current_dir
+     $win_home = .\msys\usr\bin\cygpath.exe -u $HOME
      $cache_file = $HOME+"\AppData\roaming\cabal\packages\hackage.haskell.org\00-index.cache"
      if (Test-Path $cache_file) {
         Write-Host "Removing cabal cache"
@@ -149,26 +149,26 @@ function run-msys-installscripts {
         echo 'export CC=gcc' >> ~/.bash_profile
 "@
     echo $bash_paths | Out-File -Encoding ascii temp.sh
-    .\msys\bin\bash -l -c "$current_posix/temp.sh"
+    .\msys\usr\bin\bash -l -c "$current_posix/temp.sh"
     # Do the installations one at a time, pacman on msys2 tends to flake out
     # for some forking reason. A new bash helps.
-    .\msys\bin\bash -l -c "pacman -Syu --noconfirm"
-    .\msys\bin\bash -l -c "pacman -S --noconfirm git"
-    .\msys\bin\bash -l -c "pacman -S --noconfirm tar"
-    .\msys\bin\bash -l -c "pacman -S --noconfirm gzip"
-    .\msys\bin\bash -l -c "pacman -S --noconfirm binutils"
-    .\msys\bin\bash -l -c "pacman -S --noconfirm autoconf"
-    .\msys\bin\bash -l -c "pacman -S --noconfirm make"
-    .\msys\bin\bash -l -c "pacman -S --noconfirm libtool"
-    .\msys\bin\bash -l -c "pacman -S --noconfirm automake"
-    .\msys\bin\bash -l -c "pacman -S --noconfirm xz"
-    .\msys\bin\bash -l -c "pacman -S --noconfirm msys2-w32api-runtime"
+    .\msys\usr\bin\bash -l -c "pacman -Syu --noconfirm"
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm git"
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm tar"
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm gzip"
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm binutils"
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm autoconf"
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm make"
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm libtool"
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm automake"
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm xz"
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm msys2-w32api-runtime"
     if ($msys -eq 32) {
-        .\msys\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-gcc"
+        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-gcc"
     } else {
-        .\msys\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-gcc"
+        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-gcc"
     }
-    .\msys\bin\bash -l -c "cp $current_posix/downloads/cabal.exe ~/bin"
+    .\msys\usr\bin\bash -l -c "cp $current_posix/downloads/cabal.exe ~/bin"
     $ghc_cmds=@"
     ~/bin/cabal update
     cabal install alex
@@ -178,7 +178,7 @@ function run-msys-installscripts {
     ~/bin/cabal install
 "@
     echo $ghc_cmds | Out-File -Encoding ascii idris.sh
-    .\msys\bin\bash -l -e -c "$current_posix/idris.sh"
+    .\msys\usr\bin\bash -l -e -c "$current_posix/idris.sh"
 }
 
 create-dirs
