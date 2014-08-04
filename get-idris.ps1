@@ -8,7 +8,7 @@
 # This file has been placed in the public domain by the author.
 
 $current_dir = pwd
-$msys = 64 # Change to 32 to build a 32-bit GHC
+$msys = 64 # Change to 32 to build a 32-bit Idris
 
 function get-tarball {
     param([string]$url, [string]$outfile, [string]$hash)
@@ -122,10 +122,13 @@ function install-7zip() {
 }
 
 function download-cabal {
-    $url=" http://www.haskell.org/cabal/release/cabal-install-1.18.0.2/cabal.exe"
-    $file="downloads\cabal.exe"
-    $hash="776AAF4626993FB308E3168944A465235B0DA9A5"
+    $url=" http://www.haskell.org/cabal/release/cabal-install-1.20.0.3/cabal-1.20.0.3-i386-unknown-mingw32.tar.gz"
+    $file="downloads\cabal.tar.gz"
+    $hash="370590316e6433957e2673cbfda5769e4eadfd38"
     if (get-tarball $url $file $hash) {
+        .\support\7za x -y $file -odownloads
+        .\support\7za x -y downloads\cabal.tar -odownloads
+        rm downloads\cabal.tar
     }
 }
 
