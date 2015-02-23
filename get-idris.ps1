@@ -90,13 +90,13 @@ function install-msys32() {
 }
 
 function install-ghc64 {
-#    $url="https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-x86_64-unknown-mingw32.tar.xz"
-#    $file="downloads\ghc64.tar.xz"
-#    $hash="e18e279e98768c70839a0ef606d55cb733e362dc"
+    $url="https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-x86_64-unknown-mingw32.tar.xz"
+    $file="downloads\ghc64.tar.xz"
+    $hash="e18e279e98768c70839a0ef606d55cb733e362dc"
 
-    $url="http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-x86_64-unknown-mingw32.tar.bz2"
-    $file="downloads\ghc64.tar.bz2"
-    $hash="758AC43AA13474C55F7FC25B9B19E47F93FD7E99"
+#    $url="http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-x86_64-unknown-mingw32.tar.bz2"
+#    $file="downloads\ghc64.tar.bz2"
+#    $hash="758AC43AA13474C55F7FC25B9B19E47F93FD7E99"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y ghc64.tar -omsys
@@ -195,8 +195,8 @@ create-dirs
 echo "Getting 7-zip"
 install-7zip
 if($msys -eq 32) {
-    echo "Getting msys32"
-    install-msys32
+    echo "Getting msys64"
+    install-msys64
     echo "Getting bootstrap GHC 32-bit"
     install-ghc32
 } else {
