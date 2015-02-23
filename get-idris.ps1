@@ -8,7 +8,7 @@
 # This file has been placed in the public domain by the author.
 
 $current_dir = pwd
-$msys = 32 # 32 to build a 32-bit Idris or 64 to build 64-bit
+$msys = 64 # 32 to build a 32-bit Idris or 64 to build 64-bit
 
 function get-tarball {
     param([string]$url, [string]$outfile, [string]$hash)
