@@ -78,9 +78,9 @@ function install-ghc32 {
 }
 
 function install-msys32() {
-    $url="http://sourceforge.net/projects/msys2/files/Base/i686/msys2-base-i686-20140704.tar.xz/download"
+    $url="http://sourceforge.net/projects/msys2/files/Base/i686/msys2-base-i686-20150202.tar.xz/download"
     $file="downloads\msys32.tar.xz"
-    $hash="775d885438ab5abde250c307dd6cf2525af2edef"
+    $hash="FBE0F1D52E26045127287C3B20AAC22422FFE0E1"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y msys32.tar
@@ -105,9 +105,9 @@ function install-ghc64 {
 }
 
 function install-msys64() {
-    $url="http://sourceforge.net/projects/msys2/files/Base/x86_64/msys2-base-x86_64-20140704.tar.xz/download"
+    $url="http://sourceforge.net/projects/msys2/files/Base/x86_64/msys2-base-x86_64-20150202.tar.xz/download"
     $file="downloads\msys64.tar.xz"
-    $hash="28329156278d91114aa870b7c0680ad261292c5d"
+    $hash="D67D980A3AFDDF497A3574BB3D6C6DD688B499CA"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y msys64.tar
