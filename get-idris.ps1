@@ -145,12 +145,17 @@ function run-msys-installscripts {
         Write-Host "Removing cabal cache"
         rm $cache_file
      }
+     if ($msys -eq 32) {
+        $ghcver="7.8.3"
+     } else {
+        $ghcver="7.8.4"
+     }
     set MSYSTEM=$msys
     $bash_paths=@"
         mkdir -p ~/bin
         echo 'export LC_ALL=C' >> ~/.bash_profile
         echo 'export PATH=$($win_home)/AppData/Roaming/cabal/bin:`$PATH' >> ~/.bash_profile
-        echo 'export PATH=/ghc-7.8.3/bin:`$PATH'       >> ~/.bash_profile
+        echo 'export PATH=/ghc-$($ghcver)/bin:`$PATH'       >> ~/.bash_profile
         echo 'export PATH=`$HOME/bin:`$PATH'            >> ~/.bash_profile
         echo 'export PATH=/mingw$($msys)/bin:`$PATH'            >> ~/.bash_profile
         echo 'export CC=gcc' >> ~/.bash_profile
