@@ -141,7 +141,8 @@ function download-cabal {
 
 function run-msys-installscripts {
     .\msys\autorebase.bat
-    .\msys\usr\bin\bash -l -c "exit" | Out-Null
+    set MSYSTEM=MSYS
+    .\msys\usr\bin\bash --login -c "exit" | Out-Null
      $current_posix=.\msys\usr\bin\cygpath.exe -u $current_dir
      $win_home = .\msys\usr\bin\cygpath.exe -u $HOME
      $cache_file = $HOME+"\AppData\roaming\cabal\packages\hackage.haskell.org\00-index.cache"
@@ -152,7 +153,6 @@ function run-msys-installscripts {
 
     $bash_paths=@"
         mkdir -p ~/bin
-        echo 'export MSYSTEM=$($msys)' >> ~/.bash_profile
         echo 'export LC_ALL=C' >> ~/.bash_profile
         echo 'export PATH=$($win_home)/AppData/Roaming/cabal/bin:`$PATH' >> ~/.bash_profile
         echo 'export PATH=/ghc-7.8.3/bin:`$PATH'       >> ~/.bash_profile
