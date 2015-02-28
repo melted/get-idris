@@ -8,7 +8,7 @@
 # This file has been placed in the public domain by the author.
 
 $current_dir = pwd
-$msys = 64 # 32 to build a 32-bit Idris or 64 to build 64-bit
+$msys = 32 # 32 to build a 32-bit Idris or 64 to build 64-bit
 
 function get-tarball {
     param([string]$url, [string]$outfile, [string]$hash)
@@ -151,8 +151,9 @@ function run-msys-installscripts {
 
     $bash_paths=@"
         mkdir -p ~/bin
+        echo 'export MSYSTEM=$($msys)' >> ~/.bash_profile
         echo 'export LC_ALL=C' >> ~/.bash_profile
-        echo 'export PATH=/ghc-7.6.3/bin:`$PATH'       >> ~/.bash_profile
+        echo 'export PATH=/ghc-7.8.3/bin:`$PATH'       >> ~/.bash_profile
         echo 'export PATH=`$HOME/bin:`$PATH'            >> ~/.bash_profile
         echo 'export PATH=/mingw$($msys)/bin:`$PATH'            >> ~/.bash_profile
         echo 'export PATH=$($win_home)/AppData/Roaming/cabal/bin:`$PATH' >> ~/.bash_profile
@@ -175,8 +176,12 @@ function run-msys-installscripts {
     .\msys\usr\bin\bash -l -c "pacman -S --noconfirm msys2-w32api-runtime"
     if ($msys -eq 32) {
         .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-gcc"
+        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-pkg-config"
+        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-libffi"
     } else {
         .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-gcc"
+        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-pkg-config"
+        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-libffi"
     }
     .\msys\usr\bin\bash -l -c "cp $current_posix/downloads/cabal.exe ~/bin"
     $ghc_cmds=@"
@@ -185,7 +190,7 @@ function run-msys-installscripts {
     git clone git://github.com/idris-lang/Idris-dev idris
     cd idris
     export CC=gcc
-    ~/bin/cabal install
+    CABALFLAGS="-fffi" make
 "@
     echo $ghc_cmds | Out-File -Encoding ascii idris.sh
     .\msys\usr\bin\bash -l -e -c "$current_posix/idris.sh"
