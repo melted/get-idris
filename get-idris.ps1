@@ -154,12 +154,10 @@ function run-msys-installscripts {
     $bash_paths=@"
         mkdir -p ~/bin
         echo 'export LC_ALL=C' >> ~/.bash_profile
-        echo 'export PATH=$($win_home)/AppData/Roaming/cabal/bin:`$PATH' >> ~/.bash_profile
         echo 'export PATH=/ghc-$($ghcver)/bin:`$PATH'       >> ~/.bash_profile
         echo 'export PATH=`$HOME/bin:`$PATH'            >> ~/.bash_profile
-        echo 'export PATH=/mingw$($msys)/bin:`$PATH'            >> ~/.bash_profile
+        echo 'export PATH=$($win_home)/AppData/Roaming/cabal/bin:`$PATH' >> ~/.bash_profile
         echo 'export CC=gcc' >> ~/.bash_profile
-        echo 'uname: `uname`'
 "@
     echo $bash_paths | Out-File -Encoding ascii temp.sh
     .\msys\usr\bin\bash -l -c "$current_posix/temp.sh"
@@ -191,7 +189,6 @@ function run-msys-installscripts {
     cabal install alex
     git clone git://github.com/idris-lang/Idris-dev idris
     cd idris
-    export CC=gcc
     CABALFLAGS="-fffi" make
 "@
     echo $ghc_cmds | Out-File -Encoding ascii idris.sh
