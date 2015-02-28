@@ -67,9 +67,7 @@ function install-ghc32 {
     $url="https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-i386-unknown-mingw32.tar.xz"
     $file="downloads\ghc32.tar.xz"
     $hash="10ed53deddd356efcca4ad237bdd0e5a5102fb11"
-#    $url="http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-i386-unknown-mingw32.tar.bz2"
-#    $file="downloads\ghc32.tar.bz"
-#    $hash="8729A1D7E73D69CE6CFA6E5519D6710F53A57064"
+    
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y ghc32.tar -omsys
@@ -90,13 +88,10 @@ function install-msys32() {
 }
 
 function install-ghc64 {
-    $url="https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-x86_64-unknown-mingw32.tar.xz"
+    $url="https://www.haskell.org/ghc/dist/7.8.4/ghc-7.8.4-x86_64-unknown-mingw32.tar.xz"
     $file="downloads\ghc64.tar.xz"
-    $hash="e18e279e98768c70839a0ef606d55cb733e362dc"
+    $hash="cec5b4c4fe612ac1fe9302f491ae58ac44812b26"
 
-#    $url="http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-x86_64-unknown-mingw32.tar.bz2"
-#    $file="downloads\ghc64.tar.bz2"
-#    $hash="758AC43AA13474C55F7FC25B9B19E47F93FD7E99"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y ghc64.tar -omsys
@@ -150,7 +145,7 @@ function run-msys-installscripts {
         Write-Host "Removing cabal cache"
         rm $cache_file
      }
-
+    set MSYSTEM=$msys
     $bash_paths=@"
         mkdir -p ~/bin
         echo 'export LC_ALL=C' >> ~/.bash_profile
@@ -159,6 +154,7 @@ function run-msys-installscripts {
         echo 'export PATH=`$HOME/bin:`$PATH'            >> ~/.bash_profile
         echo 'export PATH=/mingw$($msys)/bin:`$PATH'            >> ~/.bash_profile
         echo 'export CC=gcc' >> ~/.bash_profile
+        echo 'uname: `uname`'
 "@
     echo $bash_paths | Out-File -Encoding ascii temp.sh
     .\msys\usr\bin\bash -l -c "$current_posix/temp.sh"
