@@ -8,7 +8,7 @@
 # This file has been placed in the public domain by the author.
 
 $current_dir = pwd
-$msys = 32 # 32 to build a 32-bit Idris or 64 to build 64-bit
+$msys = 64 # 32 to build a 32-bit Idris or 64 to build 64-bit
 
 function get-tarball {
     param([string]$url, [string]$outfile, [string]$hash)
@@ -64,12 +64,12 @@ function create-dirs {
 }
 
 function install-ghc32 {
-#    $url="https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-i386-unknown-mingw32.tar.xz"
-#    $file="downloads\ghc32.tar.xz"
-#    $hash="10ed53deddd356efcca4ad237bdd0e5a5102fb11"
-    $url="http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-i386-unknown-mingw32.tar.bz2"
-    $file="downloads\ghc32.tar.bz"
-    $hash="8729A1D7E73D69CE6CFA6E5519D6710F53A57064"
+    $url="https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-i386-unknown-mingw32.tar.xz"
+    $file="downloads\ghc32.tar.xz"
+    $hash="10ed53deddd356efcca4ad237bdd0e5a5102fb11"
+#    $url="http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-i386-unknown-mingw32.tar.bz2"
+#    $file="downloads\ghc32.tar.bz"
+#    $hash="8729A1D7E73D69CE6CFA6E5519D6710F53A57064"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y ghc32.tar -omsys
@@ -153,10 +153,10 @@ function run-msys-installscripts {
         mkdir -p ~/bin
         echo 'export MSYSTEM=$($msys)' >> ~/.bash_profile
         echo 'export LC_ALL=C' >> ~/.bash_profile
+        echo 'export PATH=$($win_home)/AppData/Roaming/cabal/bin:`$PATH' >> ~/.bash_profile
         echo 'export PATH=/ghc-7.8.3/bin:`$PATH'       >> ~/.bash_profile
         echo 'export PATH=`$HOME/bin:`$PATH'            >> ~/.bash_profile
         echo 'export PATH=/mingw$($msys)/bin:`$PATH'            >> ~/.bash_profile
-        echo 'export PATH=$($win_home)/AppData/Roaming/cabal/bin:`$PATH' >> ~/.bash_profile
         echo 'export CC=gcc' >> ~/.bash_profile
 "@
     echo $bash_paths | Out-File -Encoding ascii temp.sh
@@ -185,7 +185,7 @@ function run-msys-installscripts {
     }
     .\msys\usr\bin\bash -l -c "cp $current_posix/downloads/cabal.exe ~/bin"
     $ghc_cmds=@"
-    ~/bin/cabal update
+    cabal update
     cabal install alex
     git clone git://github.com/idris-lang/Idris-dev idris
     cd idris
