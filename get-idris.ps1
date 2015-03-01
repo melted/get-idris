@@ -150,7 +150,7 @@ function run-msys-installscripts {
      } else {
         $ghcver="7.8.4"
      }
-    set MSYSTEM=$msys
+    set MSYSTEM $msys
     $bash_paths=@"
         mkdir -p ~/bin
         echo 'export LC_ALL=C' >> ~/.bash_profile
@@ -192,6 +192,7 @@ function run-msys-installscripts {
     CABALFLAGS="-fffi" make
 "@
     echo $ghc_cmds | Out-File -Encoding ascii idris.sh
+
     .\msys\usr\bin\bash -l -e -c "$current_posix/idris.sh"
 }
 
