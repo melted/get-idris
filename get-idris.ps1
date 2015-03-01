@@ -136,7 +136,7 @@ function download-cabal {
 
 function run-msys-installscripts {
     .\msys\autorebase.bat
-    set MSYSTEM=MSYS
+    set MSYSTEM MSYS
     .\msys\usr\bin\bash --login -c "exit" | Out-Null
      $current_posix=.\msys\usr\bin\cygpath.exe -u $current_dir
      $win_home = .\msys\usr\bin\cygpath.exe -u $HOME
@@ -150,9 +150,10 @@ function run-msys-installscripts {
      } else {
         $ghcver="7.8.4"
      }
-    set MSYSTEM $msys
+    $msystem="MINGW$msys"
     $bash_paths=@"
         mkdir -p ~/bin
+        echo `$MSYSTEM
         echo 'export LC_ALL=C' >> ~/.bash_profile
         echo 'export PATH=/ghc-$($ghcver)/bin:`$PATH'       >> ~/.bash_profile
         echo 'export PATH=`$HOME/bin:`$PATH'            >> ~/.bash_profile
@@ -185,6 +186,8 @@ function run-msys-installscripts {
     }
     .\msys\usr\bin\bash -l -c "cp $current_posix/downloads/cabal.exe ~/bin"
     $ghc_cmds=@"
+    echo `$MSYSTEM
+    echo `$PATH
     cabal update
     cabal install alex
     git clone git://github.com/idris-lang/Idris-dev idris
@@ -193,7 +196,12 @@ function run-msys-installscripts {
 "@
     echo $ghc_cmds | Out-File -Encoding ascii idris.sh
 
+    $cmd_line = @"
+    set MSYSTEM=$($msystem)
     .\msys\usr\bin\bash -l -e -c "$current_posix/idris.sh"
+"@
+    echo $cmd_line | Out-File -Encoding ascii idris.bat
+    .\idris.bat
 }
 
 create-dirs
