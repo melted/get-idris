@@ -136,7 +136,6 @@ function download-cabal {
 
 function run-msys-installscripts {
     .\msys\autorebase.bat
-    set MSYSTEM MSYS
     .\msys\usr\bin\bash --login -c "exit" | Out-Null
      $current_posix=.\msys\usr\bin\cygpath.exe -u $current_dir
      $win_home = .\msys\usr\bin\cygpath.exe -u $HOME
@@ -186,8 +185,6 @@ function run-msys-installscripts {
     }
     .\msys\usr\bin\bash -l -c "cp $current_posix/downloads/cabal.exe ~/bin"
     $ghc_cmds=@"
-    echo `$MSYSTEM
-    echo `$PATH
     cabal update
     cabal install alex
     git clone git://github.com/idris-lang/Idris-dev idris
