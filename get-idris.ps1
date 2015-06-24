@@ -187,18 +187,22 @@ function run-msys-installscripts {
     $ghc_cmds=@"
     cabal update
     cabal install alex
-    git clone git://github.com/idris-lang/Idris-dev idris
-    cd idris
+    if [ -d "idris" ]; then
+        cd idris; git pull
+    else
+        git clone git://github.com/idris-lang/Idris-dev idris
+        cd idris
+    fi
     CABALFLAGS="-fffi" make
 "@
-    echo $ghc_cmds | Out-File -Encoding ascii idris.sh
+    echo $ghc_cmds | Out-File -Encoding ascii build-idris.sh
 
     $cmd_line = @"
     set MSYSTEM=$($msystem)
-    .\msys\usr\bin\bash -l -e -c "$current_posix/idris.sh"
+    .\msys\usr\bin\bash -l -e -c "$current_posix/build-idris.sh"
 "@
-    echo $cmd_line | Out-File -Encoding ascii idris.bat
-    .\idris.bat
+    echo $cmd_line | Out-File -Encoding ascii build-idris.bat
+    .\build-idris.bat
 }
 
 create-dirs
