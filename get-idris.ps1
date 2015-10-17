@@ -67,7 +67,7 @@ function install-ghc32 {
     $url="https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-i386-unknown-mingw32.tar.xz"
     $file="downloads\ghc32.tar.xz"
     $hash="10ed53deddd356efcca4ad237bdd0e5a5102fb11"
-    
+
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y ghc32.tar -omsys
@@ -149,10 +149,8 @@ function run-msys-installscripts {
      } else {
         $ghcver="7.8.4"
      }
-    $msystem="MINGW$msys"
     $bash_paths=@"
         mkdir -p ~/bin
-        echo `$MSYSTEM
         echo 'export LC_ALL=C' >> ~/.bash_profile
         echo 'export PATH=/ghc-$($ghcver)/bin:`$PATH'       >> ~/.bash_profile
         echo 'export PATH=`$HOME/bin:`$PATH'            >> ~/.bash_profile
@@ -197,12 +195,8 @@ function run-msys-installscripts {
 "@
     echo $ghc_cmds | Out-File -Encoding ascii build-idris.sh
 
-    $cmd_line = @"
-    set MSYSTEM=$($msystem)
+    $env:MSYSTEM="MINGW$msys"
     .\msys\usr\bin\bash -l -e -c "$current_posix/build-idris.sh"
-"@
-    echo $cmd_line | Out-File -Encoding ascii build-idris.bat
-    .\build-idris.bat
 }
 
 create-dirs
