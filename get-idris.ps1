@@ -149,6 +149,7 @@ function run-msys-installscripts {
      } else {
         $ghcver="7.8.4"
      }
+    Write-Host "Installing packages"
     $bash_paths=@"
         mkdir -p ~/bin
         echo 'export LC_ALL=C' >> ~/.bash_profile
@@ -158,33 +159,26 @@ function run-msys-installscripts {
         echo 'export CC=gcc' >> ~/.bash_profile
 "@
     echo $bash_paths | Out-File -Encoding ascii temp.sh
-    .\msys\usr\bin\bash -l -c "$current_posix/temp.sh"
+    .\msys\usr\bin\bash -l -c "$current_posix/temp.sh" | Out-Null
     # Do the installations one at a time, pacman on msys2 tends to flake out
     # for some forking reason. A new bash helps.
-    .\msys\usr\bin\bash -l -c "pacman -Syu --noconfirm"
-    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm git"
-    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm tar"
-    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm gzip"
-    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm binutils"
-    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm autoconf"
-    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm make"
-    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm libtool"
-    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm automake"
-    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm xz"
-    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm msys2-w32api-runtime"
+    .\msys\usr\bin\bash -l -c "pacman -Syu --noconfirm" | Out-Null
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm git" | Out-Null
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm tar" | Out-Null
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm gzip" | Out-Null
+    .\msys\usr\bin\bash -l -c "pacman -S --noconfirm make" | Out-Null
     if ($msys -eq 32) {
-        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-gcc"
-        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-pkg-config"
-        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-libffi"
+        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-gcc" | Out-Null
+        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-pkg-config" | Out-Null
+        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-i686-libffi" | Out-Null
     } else {
-        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-gcc"
-        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-pkg-config"
-        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-libffi"
+        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-gcc" | Out-Null
+        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-pkg-config" | Out-Null
+        .\msys\usr\bin\bash -l -c "pacman -S --noconfirm mingw-w64-x86_64-libffi" | Out-Null
     }
-    .\msys\usr\bin\bash -l -c "cp $current_posix/downloads/cabal.exe ~/bin"
+    .\msys\usr\bin\bash -l -c "cp $current_posix/downloads/cabal.exe ~/bin" | Out-Null
     $ghc_cmds=@"
     cabal update
-    cabal install alex
     if [ -d "idris" ]; then
         cd idris; git pull
     else
@@ -195,25 +189,26 @@ function run-msys-installscripts {
 "@
     echo $ghc_cmds | Out-File -Encoding ascii build-idris.sh
 
+    Write-Host "Getting and building Idris"
     $env:MSYSTEM="MINGW$msys"
-    .\msys\usr\bin\bash -l -e -c "$current_posix/build-idris.sh"
+    .\msys\usr\bin\bash -l -e -c "$current_posix/build-idris.sh" | Out-Null
 }
 
 create-dirs
 echo "Getting 7-zip"
-install-7zip
+install-7zip | Out-Null
 if($msys -eq 32) {
     echo "Getting msys64"
-    install-msys64
+    install-msys64 | Out-Null
     echo "Getting bootstrap GHC 32-bit"
-    install-ghc32
+    install-ghc32 | Out-Null
 } else {
     echo "Getting msys64"
-    install-msys64
+    install-msys64 | Out-Null
     echo "Getting bootstrap GHC 64-bit"
-    install-ghc64
+    install-ghc64 | Out-Null
 }
 echo "Getting cabal.exe"
-download-cabal
+download-cabal | Out-Null
 echo "Starting msys configuration"
 run-msys-installscripts
