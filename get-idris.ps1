@@ -198,8 +198,8 @@ create-dirs
 echo "Getting 7-zip"
 install-7zip | Out-Null
 if($msys -eq 32) {
-    echo "Getting msys64"
-    install-msys64 | Out-Null
+    echo "Getting msys32"
+    install-msys32 | Out-Null
     echo "Getting bootstrap GHC 32-bit"
     install-ghc32 | Out-Null
 } else {
