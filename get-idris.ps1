@@ -88,9 +88,9 @@ function install-msys32() {
 }
 
 function install-ghc64 {
-    $url="https://www.haskell.org/ghc/dist/7.8.4/ghc-7.8.4-x86_64-unknown-mingw32.tar.xz"
+    $url="https://www.haskell.org/ghc/dist/8.0.1/ghc-8.0.1-x86_64-unknown-mingw32.tar.xz"
     $file="downloads\ghc64.tar.xz"
-    $hash="cec5b4c4fe612ac1fe9302f491ae58ac44812b26"
+    $hash="5901210c31ec903b64872765edf2a1fb697c8e18"
 
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
@@ -123,14 +123,25 @@ function install-7zip() {
     }
 }
 
-function download-cabal {
+function download-cabal32 {
     $url=" http://www.haskell.org/cabal/release/cabal-install-1.20.0.3/cabal-1.20.0.3-i386-unknown-mingw32.tar.gz"
-    $file="downloads\cabal.tar.gz"
+    $file="downloads\cabal32.tar.gz"
     $hash="370590316e6433957e2673cbfda5769e4eadfd38"
     if (get-tarball $url $file $hash) {
         .\support\7za x -y $file -odownloads
-        .\support\7za x -y downloads\cabal.tar -odownloads
-        rm downloads\cabal.tar
+        .\support\7za x -y downloads\cabal32.tar -odownloads
+        rm downloads\cabal32.tar
+    }
+}
+
+function download-cabal64 {
+    $url="http://www.haskell.org/cabal/release/cabal-install-1.24.0.0/cabal-install-1.24.0.0-i386-unknown-mingw32.zip"
+    $file="downloads\cabal64.zip"
+    $hash="3faa74780df0d2d9de1450f85bb24b1f6d5f8c43"
+    if (get-tarball $url $file $hash) {
+        $dir = "$current_dir\downloads"
+        $abs_file = "$current_dir\$file"
+        Extract-Zip $abs_file $dir
     }
 }
 
@@ -147,7 +158,7 @@ function run-msys-installscripts {
      if ($msys -eq 32) {
         $ghcver="7.8.3"
      } else {
-        $ghcver="7.8.4"
+        $ghcver="8.0.1"
      }
     Write-Host "Installing packages"
     $bash_paths=@"
@@ -202,13 +213,15 @@ if($msys -eq 32) {
     install-msys32 | Out-Null
     echo "Getting bootstrap GHC 32-bit"
     install-ghc32 | Out-Null
+	echo "Getting cabal.exe"
+    download-cabal32 | Out-Null
 } else {
     echo "Getting msys64"
     install-msys64 | Out-Null
     echo "Getting bootstrap GHC 64-bit"
     install-ghc64 | Out-Null
+	echo "Getting cabal.exe"
+    download-cabal64 | Out-Null
 }
-echo "Getting cabal.exe"
-download-cabal | Out-Null
 echo "Starting msys configuration"
 run-msys-installscripts
