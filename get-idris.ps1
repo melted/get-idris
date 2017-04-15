@@ -64,9 +64,9 @@ function create-dirs {
 }
 
 function install-ghc32 {
-    $url="https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-i386-unknown-mingw32.tar.xz"
+    $url="https://downloads.haskell.org/~ghc/8.0.2/ghc-8.0.2-i386-unknown-mingw32-win10.tar.xz"
     $file="downloads\ghc32.tar.xz"
-    $hash="10ed53deddd356efcca4ad237bdd0e5a5102fb11"
+    $hash="2d99a736c156ca40a1879a7137c0833142d4643b"
 
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
@@ -76,9 +76,9 @@ function install-ghc32 {
 }
 
 function install-msys32() {
-    $url="http://sourceforge.net/projects/msys2/files/Base/i686/msys2-base-i686-20150916.tar.xz/download"
+    $url="http://sourceforge.net/projects/msys2/files/Base/i686/msys2-base-i686-20161025.tar.xz/download"
     $file="downloads\msys32.tar.xz"
-    $hash="c0f87ca4e5b48d72c152305c11841551029d4257"
+    $hash="5d17fa53077a93a38a9ac0acb8a03bf6c2fc32ad"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y msys32.tar
@@ -88,9 +88,9 @@ function install-msys32() {
 }
 
 function install-ghc64 {
-    $url="https://www.haskell.org/ghc/dist/8.0.1/ghc-8.0.1-x86_64-unknown-mingw32.tar.xz"
+    $url="https://downloads.haskell.org/~ghc/8.0.2/ghc-8.0.2-x86_64-unknown-mingw32-win10.tar.xz"
     $file="downloads\ghc64.tar.xz"
-    $hash="5901210c31ec903b64872765edf2a1fb697c8e18"
+    $hash="4a6779a2d2bb376dfb4a63dbb3f906c0b54d23e3"
 
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
@@ -100,9 +100,9 @@ function install-ghc64 {
 }
 
 function install-msys64() {
-    $url="http://sourceforge.net/projects/msys2/files/Base/x86_64/msys2-base-x86_64-20150916.tar.xz/download"
+    $url="http://sourceforge.net/projects/msys2/files/Base/x86_64/msys2-base-x86_64-20161025.tar.xz/download"
     $file="downloads\msys64.tar.xz"
-    $hash="abc08265b90f68e8f68c74e833f42405e85df4ee"
+    $hash="05fd74a6c61923837dffe22601c9014f422b5460"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y msys64.tar
@@ -123,18 +123,7 @@ function install-7zip() {
     }
 }
 
-function download-cabal32 {
-    $url=" http://www.haskell.org/cabal/release/cabal-install-1.20.0.3/cabal-1.20.0.3-i386-unknown-mingw32.tar.gz"
-    $file="downloads\cabal32.tar.gz"
-    $hash="370590316e6433957e2673cbfda5769e4eadfd38"
-    if (get-tarball $url $file $hash) {
-        .\support\7za x -y $file -odownloads
-        .\support\7za x -y downloads\cabal32.tar -odownloads
-        rm downloads\cabal32.tar
-    }
-}
-
-function download-cabal64 {
+function download-cabal {
     $url="http://www.haskell.org/cabal/release/cabal-install-1.24.0.0/cabal-install-1.24.0.0-i386-unknown-mingw32.zip"
     $file="downloads\cabal64.zip"
     $hash="3faa74780df0d2d9de1450f85bb24b1f6d5f8c43"
@@ -155,11 +144,8 @@ function run-msys-installscripts {
         Write-Host "Removing cabal cache"
         rm $cache_file
      }
-     if ($msys -eq 32) {
-        $ghcver="7.8.3"
-     } else {
-        $ghcver="8.0.1"
-     }
+
+    $ghcver = "8.0.2"
     Write-Host "Installing packages"
     $bash_paths=@"
         mkdir -p ~/bin
@@ -173,7 +159,9 @@ function run-msys-installscripts {
     .\msys\usr\bin\bash -l -c "$current_posix/temp.sh" | Out-Null
     # Do the installations one at a time, pacman on msys2 tends to flake out
     # for some forking reason. A new bash helps.
-    .\msys\usr\bin\bash -l -c "pacman -Syu --noconfirm" | Out-Null
+    # Removed update because it will expect manual termination that 
+    # can't be performed inside the script.
+    # .\msys\usr\bin\bash -l -c "pacman -Syu --noconfirm" | Out-Null
     .\msys\usr\bin\bash -l -c "pacman -S --noconfirm git" | Out-Null
     .\msys\usr\bin\bash -l -c "pacman -S --noconfirm tar" | Out-Null
     .\msys\usr\bin\bash -l -c "pacman -S --noconfirm gzip" | Out-Null
@@ -214,14 +202,14 @@ if($msys -eq 32) {
     echo "Getting bootstrap GHC 32-bit"
     install-ghc32 | Out-Null
 	echo "Getting cabal.exe"
-    download-cabal32 | Out-Null
+    download-cabal | Out-Null
 } else {
     echo "Getting msys64"
     install-msys64 | Out-Null
     echo "Getting bootstrap GHC 64-bit"
     install-ghc64 | Out-Null
 	echo "Getting cabal.exe"
-    download-cabal64 | Out-Null
+    download-cabal | Out-Null
 }
 echo "Starting msys configuration"
 run-msys-installscripts
