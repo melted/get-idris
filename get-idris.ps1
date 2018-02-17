@@ -10,6 +10,9 @@
 $current_dir = pwd
 $msys = 64 # 32 to build a 32-bit Idris or 64 to build 64-bit
 
+## Set TLS version to 1.2
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 function get-tarball {
     param([string]$url, [string]$outfile, [string]$hash)
     $exists = Test-Path $outfile
@@ -76,7 +79,7 @@ function install-ghc32 {
 }
 
 function install-msys32() {
-    $url="http://sourceforge.net/projects/msys2/files/Base/i686/msys2-base-i686-20161025.tar.xz/download"
+    $url="https://sourceforge.net/projects/msys2/files/Base/i686/msys2-base-i686-20161025.tar.xz/download"
     $file="downloads\msys32.tar.xz"
     $hash="5d17fa53077a93a38a9ac0acb8a03bf6c2fc32ad"
     if(get-tarball $url $file $hash) {
@@ -100,7 +103,7 @@ function install-ghc64 {
 }
 
 function install-msys64() {
-    $url="http://sourceforge.net/projects/msys2/files/Base/x86_64/msys2-base-x86_64-20161025.tar.xz/download"
+    $url="https://sourceforge.net/projects/msys2/files/Base/x86_64/msys2-base-x86_64-20161025.tar.xz/download"
     $file="downloads\msys64.tar.xz"
     $hash="05fd74a6c61923837dffe22601c9014f422b5460"
     if(get-tarball $url $file $hash) {
@@ -112,7 +115,7 @@ function install-msys64() {
 }
 
 function install-7zip() {
-    $url="http://sourceforge.net/projects/sevenzip/files/7-Zip/9.20/7za920.zip/download"
+    $url="https://sourceforge.net/projects/sevenzip/files/7-Zip/9.20/7za920.zip/download"
     $file="downloads\7z.zip"
     $hash="9CE9CE89EBC070FEA5D679936F21F9DDE25FAAE0"
     if (get-tarball $url $file $hash) {
@@ -124,7 +127,7 @@ function install-7zip() {
 }
 
 function download-cabal {
-    $url="http://www.haskell.org/cabal/release/cabal-install-1.24.0.0/cabal-install-1.24.0.0-i386-unknown-mingw32.zip"
+    $url="https://www.haskell.org/cabal/release/cabal-install-1.24.0.0/cabal-install-1.24.0.0-i386-unknown-mingw32.zip"
     $file="downloads\cabal64.zip"
     $hash="3faa74780df0d2d9de1450f85bb24b1f6d5f8c43"
     if (get-tarball $url $file $hash) {
