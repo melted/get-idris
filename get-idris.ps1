@@ -67,9 +67,9 @@ function create-dirs {
 }
 
 function install-ghc32 {
-    $url="https://downloads.haskell.org/~ghc/8.0.2/ghc-8.0.2-i386-unknown-mingw32-win10.tar.xz"
+    $url="https://downloads.haskell.org/~ghc/8.6.3/ghc-8.6.3-i386-unknown-mingw32.tar.xz"
     $file="downloads\ghc32.tar.xz"
-    $hash="2d99a736c156ca40a1879a7137c0833142d4643b"
+    $hash="ceae1078e7a2dee24eee1921e8e607e15801026c"
 
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
@@ -91,9 +91,9 @@ function install-msys32() {
 }
 
 function install-ghc64 {
-    $url="https://downloads.haskell.org/~ghc/8.0.2/ghc-8.0.2-x86_64-unknown-mingw32-win10.tar.xz"
+    $url="https://downloads.haskell.org/~ghc/8.6.3/ghc-8.6.3-x86_64-unknown-mingw32.tar.xz"
     $file="downloads\ghc64.tar.xz"
-    $hash="4a6779a2d2bb376dfb4a63dbb3f906c0b54d23e3"
+    $hash="5a352e50ccf1deecc335300c5d8984ce863059b4"
 
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
@@ -148,7 +148,7 @@ function run-msys-installscripts {
         rm $cache_file
      }
 
-    $ghcver = "8.0.2"
+    $ghcver = "8.6.3"
     Write-Host "Installing packages"
     $bash_paths=@"
         mkdir -p ~/bin
