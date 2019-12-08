@@ -79,9 +79,9 @@ function install-ghc32 {
 }
 
 function install-msys32() {
-    $url="https://sourceforge.net/projects/msys2/files/Base/i686/msys2-base-i686-20161025.tar.xz/download"
+    $url="http://repo.msys2.org/distrib/i686/msys2-base-i686-20190524.tar.xz"
     $file="downloads\msys32.tar.xz"
-    $hash="5d17fa53077a93a38a9ac0acb8a03bf6c2fc32ad"
+    $hash="ff86c3e4ef8777074fd394510b95943d0c943956"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y msys32.tar
@@ -103,9 +103,9 @@ function install-ghc64 {
 }
 
 function install-msys64() {
-    $url="https://sourceforge.net/projects/msys2/files/Base/x86_64/msys2-base-x86_64-20161025.tar.xz/download"
+    $url="http://repo.msys2.org/distrib/x86_64/msys2-base-x86_64-20190524.tar.xz"
     $file="downloads\msys64.tar.xz"
-    $hash="05fd74a6c61923837dffe22601c9014f422b5460"
+    $hash="cfe5035b1b81b43469d16bfc23be8006b9a44455"
     if(get-tarball $url $file $hash) {
         .\support\7za x -y $file
         .\support\7za x -y msys64.tar
@@ -127,9 +127,9 @@ function install-7zip() {
 }
 
 function download-cabal {
-    $url="https://www.haskell.org/cabal/release/cabal-install-1.24.0.0/cabal-install-1.24.0.0-i386-unknown-mingw32.zip"
+    $url="https://downloads.haskell.org/~cabal/cabal-install-latest/cabal-install-3.0.0.0-x86_64-unknown-mingw32.zip"
     $file="downloads\cabal64.zip"
-    $hash="3faa74780df0d2d9de1450f85bb24b1f6d5f8c43"
+    $hash="44281bbed26e6f9de8366b09d193620f5ecd12bc"
     if (get-tarball $url $file $hash) {
         $dir = "$current_dir\downloads"
         $abs_file = "$current_dir\$file"
@@ -202,14 +202,14 @@ install-7zip | Out-Null
 if($msys -eq 32) {
     echo "Getting msys32"
     install-msys32 | Out-Null
-    echo "Getting bootstrap GHC 32-bit"
+    echo "Getting GHC 32-bit"
     install-ghc32 | Out-Null
 	echo "Getting cabal.exe"
     download-cabal | Out-Null
 } else {
     echo "Getting msys64"
     install-msys64 | Out-Null
-    echo "Getting bootstrap GHC 64-bit"
+    echo "Getting GHC 64-bit"
     install-ghc64 | Out-Null
 	echo "Getting cabal.exe"
     download-cabal | Out-Null

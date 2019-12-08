@@ -3,3 +3,6 @@ msys
 downloads
 support
 test
+
+build-idris.sh
+temp.sh
