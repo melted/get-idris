@@ -162,9 +162,9 @@ function run-msys-installscripts {
     .\msys\usr\bin\bash -l -c "$current_posix/temp.sh" | Out-Null
     # Do the installations one at a time, pacman on msys2 tends to flake out
     # for some forking reason. A new bash helps.
-    # Removed update because it will expect manual termination that 
-    # can't be performed inside the script.
-    # .\msys\usr\bin\bash -l -c "pacman -Syu --noconfirm" | Out-Null
+    # Update twice, to catch it all if the runtime has been updated
+    .\msys\usr\bin\bash -l -c "pacman -Syu --noconfirm" 
+    .\msys\usr\bin\bash -l -c "pacman -Syu --noconfirm" 
     .\msys\usr\bin\bash -l -c "pacman -S --noconfirm git" | Out-Null
     .\msys\usr\bin\bash -l -c "pacman -S --noconfirm tar" | Out-Null
     .\msys\usr\bin\bash -l -c "pacman -S --noconfirm gzip" | Out-Null
